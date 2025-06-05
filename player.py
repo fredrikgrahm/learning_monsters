@@ -31,12 +31,22 @@ class Player:
             dy = self.speed
             self.facing = "down"
 
-        # Check for collisions with the map
-        if game_map.is_walkable(self.rect.x + dx, self.rect.y):
-            self.rect.x += dx
-        if game_map.is_walkable(self.rect.x, self.rect.y + dy):
-            self.rect.y += dy
+        # Move horizontally and check collisions using the full rect
+        if dx != 0:
+            new_rect = self.rect.move(dx, 0)
+            if game_map.is_rect_walkable(new_rect):
+                self.rect = new_rect
+
+        # Move vertically and check collisions using the updated rect
+        if dy != 0:
+            new_rect = self.rect.move(0, dy)
+            if game_map.is_rect_walkable(new_rect):
+                self.rect = new_rect
+
+
         # Ensure the player stays within the screen bounds
+        screen_bounds = pygame.Rect(0, 0, 640, 480)
+        self.rect.clamp_ip(screen_bounds)
 
     def draw(self, surface):
         if self.facing == "right":

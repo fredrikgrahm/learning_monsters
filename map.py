@@ -45,3 +45,13 @@ class GameMap:
         if 0 <= grid_y < len(self.layout) and 0 <= grid_x < len(self.layout[0]):
             return self.layout[grid_y][grid_x] == 0
         return False
+
+    def is_rect_walkable(self, rect):
+        """Check if all corners of a rect are on walkable tiles."""
+        points = [
+            (rect.left, rect.top),
+            (rect.right - 1, rect.top),
+            (rect.left, rect.bottom - 1),
+            (rect.right - 1, rect.bottom - 1),
+        ]
+        return all(self.is_walkable(x, y) for x, y in points)
