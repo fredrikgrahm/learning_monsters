@@ -1,7 +1,8 @@
 import pygame
 import sys
 from player import Player
-from map import GameMap 
+from map import GameMap
+from encounter import EncounterManager
 
 # Init
 pygame.init()
@@ -14,11 +15,8 @@ font = pygame.font.Font(None, 36)
 game_map = GameMap()
 player = Player((200, 64))  # Placed on a walkable tile
 
-# Encounter object placed near the bottom-right corner on a walkable tile
-ENCOUNTER_POS = (18 * game_map.tile_size, 14 * game_map.tile_size)
-ENCOUNTER2_POS = (10 * game_map.tile_size, 8 * game_map.tile_size)
-encounter2_rect = pygame.Rect(ENCOUNTER2_POS, (game_map.tile_size, game_map.tile_size))
-encounter_rect = pygame.Rect(ENCOUNTER_POS, (game_map.tile_size, game_map.tile_size))
+# Encounter manager handles encounter zones and collisions
+encounters = EncounterManager(game_map)
 
 # Game loop
 while True:
@@ -32,17 +30,12 @@ while True:
     keys = pygame.key.get_pressed()
     player.update(keys, game_map)
 
-    # Check for encounter collision (either encounter)
-    encounter_triggered = (
-        player.rect.colliderect(encounter_rect) or
-        player.rect.colliderect(encounter2_rect)
-    )
+    # Check for encounter collision
+    encounter_triggered = encounters.check_trigger(player.rect)
 
-    # Draw map and player
+    # Draw map, encounters and player
     game_map.draw(screen)
-    # Draw the encounter objects as red squares
-    pygame.draw.rect(screen, (200, 0, 0), encounter_rect)
-    pygame.draw.rect(screen, (200, 0, 0), encounter2_rect)
+    encounters.draw(screen)
     player.draw(screen)
 
     if encounter_triggered:
