@@ -3,6 +3,7 @@ import sys
 from player import Player
 from map import GameMap
 from encounter import EncounterManager
+import speed_typing
 
 # Init
 pygame.init()
@@ -92,20 +93,24 @@ while True:
         else:
             sprite = player.sprite_front
         screen.blit(sprite, (20, screen.get_height() - sprite.get_height() - 20))
-
         if pygame.time.get_ticks() - encounter_start >= 5000:
-            game_state = "combat"
+            if current_enemy == "Slime":
+                if speed_typing.run(screen):
+                    encounters.remove_encounter("Slime")
+                    game_state = "overworld"
+            else:
+                if pygame.time.get_ticks() - encounter_start >= 5000:
+                    game_state = "combat"   
+                    screen.fill((0, 0, 0))
+                combat_text = font.render("Combat Mode", True, (255, 255, 255))
+                screen.blit(
+                    combat_text,
+                    (
+                        screen.get_width() // 2 - combat_text.get_width() // 2,
+                        screen.get_height() // 2 - combat_text.get_height() // 2,
+                    ),
+                )
 
-    elif game_state == "combat":
-        screen.fill((0, 0, 0))
-        combat_text = font.render("Combat Mode", True, (255, 255, 255))
-        screen.blit(
-            combat_text,
-            (
-                screen.get_width() // 2 - combat_text.get_width() // 2,
-                screen.get_height() // 2 - combat_text.get_height() // 2,
-            ),
-        )
 
     pygame.display.flip()
     clock.tick(60)
