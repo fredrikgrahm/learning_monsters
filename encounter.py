@@ -50,3 +50,7 @@ class EncounterManager:
             else:
                 # Draw a red rectangle for other encounters
                 pygame.draw.rect(surface, (200, 0, 0), rect)
+
+    def remove_encounter(self, name):
+        """Remove the first encounter with the given name."""
+        self.encounters = [e for e in self.encounters if e[0] != name]
