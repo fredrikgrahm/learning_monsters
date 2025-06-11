@@ -59,7 +59,20 @@ while True:
 
         # Enemy rectangle and name at the top right
         enemy_rect = pygame.Rect(screen.get_width() - 84, 20, 64, 64)
-        pygame.draw.rect(screen, (200, 0, 0), enemy_rect)
+
+        # Display the correct enemy sprite
+        if current_enemy == "Slime":
+            enemy_sprite = encounters.slime_sprite
+        elif current_enemy == "Goblin":
+            enemy_sprite = pygame.Surface((64, 64))  # Placeholder for Goblin sprite
+            enemy_sprite.fill((200, 0, 0))  # Red rectangle for Goblin
+        else:
+            enemy_sprite = pygame.Surface((64, 64))  # Default placeholder
+            enemy_sprite.fill((100, 100, 100))  # Gray rectangle for unknown enemies
+
+        screen.blit(enemy_sprite, enemy_rect.topleft)
+
+        # Display the enemy name below the sprite
         name_surface = font.render(current_enemy, True, (255, 255, 255))
         screen.blit(
             name_surface,

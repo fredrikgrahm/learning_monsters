@@ -6,7 +6,12 @@ class EncounterManager:
 
     def __init__(self, game_map):
         self.tile_size = game_map.tile_size
-       
+
+        # Load the slime sprite
+        self.slime_sprite = pygame.transform.scale(
+            pygame.image.load("assets/slime.png").convert_alpha(), (self.tile_size, self.tile_size)
+        )
+
         # Each encounter zone has a name so it can be displayed on the
         # transition screen.
         self.encounters = [
@@ -23,7 +28,7 @@ class EncounterManager:
                 "Slime",
                 pygame.Rect(
                     10 * self.tile_size,
-                    8 * self.tile_size,
+                    5 * self.tile_size,
                     self.tile_size,
                     self.tile_size,
                 ),
@@ -32,7 +37,6 @@ class EncounterManager:
 
     def check_trigger(self, player_rect):
         """Return the name of the encounter if the player collides."""
-
         for name, rect in self.encounters:
             if player_rect.colliderect(rect):
                 return name
@@ -41,7 +45,8 @@ class EncounterManager:
     def draw(self, surface):
         for name, rect in self.encounters:
             if name == "Slime":
-                color = (0, 200, 0)  # Green
+                # Draw the slime sprite
+                surface.blit(self.slime_sprite, rect.topleft)
             else:
-                color = (200, 0, 0)  # Red
-            pygame.draw.rect(surface, color, rect)
+                # Draw a red rectangle for other encounters
+                pygame.draw.rect(surface, (200, 0, 0), rect)
