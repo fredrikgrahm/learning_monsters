@@ -65,8 +65,7 @@ while True:
         if current_enemy == "Slime":
             enemy_sprite = encounters.slime_sprite
         elif current_enemy == "Goblin":
-            enemy_sprite = pygame.Surface((64, 64))  # Placeholder for Goblin sprite
-            enemy_sprite.fill((200, 0, 0))  # Red rectangle for Goblin
+            enemy_sprite = encounters.goblin_sprite
         else:
             enemy_sprite = pygame.Surface((64, 64))  # Default placeholder
             enemy_sprite.fill((100, 100, 100))  # Gray rectangle for unknown enemies

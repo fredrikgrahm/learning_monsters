@@ -11,7 +11,10 @@ class EncounterManager:
         self.slime_sprite = pygame.transform.scale(
             pygame.image.load("assets/slime.png").convert_alpha(), (self.tile_size, self.tile_size)
         )
-
+        # Load the goblin sprite
+        self.goblin_sprite = pygame.transform.scale(
+            pygame.image.load("assets/goblin.png").convert_alpha(), (self.tile_size, self.tile_size)
+        )
         # Each encounter zone has a name so it can be displayed on the
         # transition screen.
         self.encounters = [
@@ -47,6 +50,9 @@ class EncounterManager:
             if name == "Slime":
                 # Draw the slime sprite
                 surface.blit(self.slime_sprite, rect.topleft)
+            elif name == "Goblin":
+                # Draw the goblin sprite
+                surface.blit(self.goblin_sprite, rect.topleft)
             else:
                 # Draw a red rectangle for other encounters
                 pygame.draw.rect(surface, (200, 0, 0), rect)
